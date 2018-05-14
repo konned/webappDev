@@ -1,7 +1,5 @@
-import SQLAlchemy as SQLAlchemy
 from flask import Flask, render_template, redirect, request
-from Flask-SQLAlchemy import SQLAlchemy
-Flask-SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import statistics
 
