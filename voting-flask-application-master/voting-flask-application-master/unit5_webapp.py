@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import statistics
-
+from RiskFactorCalculation import risk_factor_calculate
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///formdata.db'
@@ -85,16 +85,36 @@ def show_result():
 @app.route("/save", methods=['POST'])
 def save():
     # Get data from FORM
-    firstname = request.form['firstname']
-    email = request.form['email']
-    age = request.form['age']
-    income = request.form['income']
-    satisfaction = request.form['satisfaction']
-    q1 = request.form['q1']
-    q2 = request.form['q2']
+    question1=request.form['antykoncepcja']
+    question2=request.form['partnerzy']
+    question3=request.form['sexWiek']
+    question4=request.form['ciaza']
+    question5=request.form['ciazaWiek']
+    question6 = request.form['cytologia']
+    question7 = request.form['palenie']
+    question8 = request.form['alkohol']
+    question9 = request.form['warzywa']
+    question10 = request.form['wf']
+    question11 = request.form['chorzySM']
+    question12 = request.form['chorzyIN']
+    question13 = request.form['waga']
+    question13_2=request.form['wzrost']
+    question14 = request.form['wiek']
+    question15 = request.form['miasto']
+    question16 = request.form['praca']
+    question17 = request.form['wyksztalcenie']
+    #firstname = request.form['firstname']
+    #email = request.form['email']
+    #age = request.form['age']
+    #income = request.form['income']
+    #satisfaction = request.form['satisfaction']
+    #q1 = request.form['q1']
+    #q2 = request.form['q2']
 
+    #funkcja obliczajaca risk factor. zwraca risk factor
+    risk_factor_calculate(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10, question11, question12, question13, question13_2,question14, question15, question16, question17)
     # Save the data
-    fd = Formdata(firstname, email, age, income, satisfaction, q1, q2)
+    #fd = Formdata(firstname, email, age, income, satisfaction, q1, q2)
     db.session.add(fd)
     db.session.commit()
 
