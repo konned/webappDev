@@ -93,7 +93,12 @@ def show_raw():
 
 @app.route("/result")
 def show_result():
-    fd_list = db.session.query(Formdata).all()
+    fd_list = db.session.query(Formdata).all() #wyciaga wszystko
+    fd_risk = db.session.query(Formdata.risk) #powinno wyciagać cala kolumne z wynikami
+    #fd_risk powinno załatwić wynik na tle innych i te slupkowe, ale trzeba bd dobrać progi
+    #tego z pie chartem trochę nie rozumiem, to może jak już bd risk na 100% ustalony :D
+
+
 
     # Some simple statistics for sample questions
     satisfaction = []
@@ -130,9 +135,21 @@ def save():
     # Get data from FORM
     question1=request.form['antykoncepcja']
     question2=request.form['partnerzy']
-    question3=request.form['sexWiek']
-    question4=request.form['ciaza']
-    question5=request.form['ciazaWiek']
+    if question2 != "0":
+        question3 = request.form['sexWiek']
+        question4 = request.form['ciaza']
+    else:
+        question3 = "0"
+        question4 = "0"
+
+    if question4 != "0":
+        question5 = request.form['ciazaWiek']
+    else:
+        question5 = "0"
+
+    #question3=request.form['sexWiek']
+    #question4=request.form['ciaza']
+    #question5=request.form['ciazaWiek']
     question6 = request.form['cytologia']
     question7 = request.form['palenie']
     question8 = request.form['alkohol']
@@ -141,18 +158,23 @@ def save():
     question11 = request.form['chorzySM']
     question12 = request.form['chorzyIN']
     question13 = request.form['waga']
-    question13_2=request.form['wzrost']
+    question13_2 = request.form['wzrost']
     question14 = request.form['wiek']
     question15 = request.form['miasto']
     question16 = request.form['praca']
     question17 = request.form['wyksztalcenie']
-    #firstname = request.form['firstname']
-    #email = request.form['email']
-    #age = request.form['age']
-    #income = request.form['income']
-    #satisfaction = request.form['satisfaction']
-    #q1 = request.form['q1']
-    #q2 = request.form['q2']
+
+    #pytania warunkowe
+    #if question2 == "0":
+    #    question3 = "0"
+    #    question4 = "0" #brak dzieci
+    #    question5 = "0"
+    #elif question4 == "0":
+    #    question5 = "0"
+
+
+
+
     #funkcja obliczajaca risk factor. zwraca risk factor
     risk = risk_factor_calculate(question1, question2, question3, question4, question5,
                           question6, question7, question8, question9, question10,
@@ -166,7 +188,7 @@ def save():
     db.session.add(fd)
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/') #TODO zmienic na wyswietlanie wykresow
 
 
 if __name__ == "__main__":
