@@ -4,15 +4,19 @@ from datetime import datetime
 import statistics
 from RiskFactorCalculation import risk_factor_calculate
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///formdata.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///formdata.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'True'
 
 db = SQLAlchemy(app)
 
 class Formdata(db.Model):
     __tablename__ = 'formdata'
-    id = db.Column(db.Integer, primary_key=True)
+
+    """
+    #To co było w wersji demo, tak wiem, że się nie używa
+    do tego tego typu komentarzy
+        id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     firstname = db.Column(db.String, nullable=False)
     email = db.Column(db.String)
@@ -21,22 +25,61 @@ class Formdata(db.Model):
     satisfaction = db.Column(db.Integer)
     q1 = db.Column(db.Integer)
     q2 = db.Column(db.Integer)
+    """
 
-    def __init__(self, firstname, email, age, income, satisfaction, q1, q2):
-        self.firstname = firstname
-        self.email = email
-        self.age = age
-        self.income = income
-        self.satisfaction = satisfaction
-        self.q1 = q1
-        self.q2 = q2
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    question1 = db.Column(db.String)
+    question2 = db.Column(db.String)
+    question3 = db.Column(db.String)
+    question4 = db.Column(db.String)
+    question5 = db.Column(db.String)
+    question6 = db.Column(db.String)
+    question7 = db.Column(db.String)
+    question8 = db.Column(db.String)
+    question9 = db.Column(db.String)
+    question10 = db.Column(db.String)
+    question11 = db.Column(db.String)
+    question12 = db.Column(db.String)
+    question13 = db.Column(db.Float) #bo waga w kg
+    question13_2 = db.Column(db.Integer) #bo wzrost w cm
+    question14 = db.Column(db.String)
+    question15 = db.Column(db.String)
+    question16 = db.Column(db.String)
+    question17 = db.Column(db.String)
+    risk = db.Column(db.Float)
+
+    def __init__(self, question1, question2, question3, question4, question5,
+                          question6, question7, question8, question9, question10,
+                          question11, question12, question13, question13_2,question14,
+                          question15, question16, question17, risk):
+        self.question1 = question1
+        self.question2 = question2
+        self.question3 = question3
+        self.question4 = question4
+        self.question5 = question5
+        self.question6 = question6
+        self.question7 = question7
+        self.question8 = question8
+        self.question9 = question9
+        self.question10 = question10
+        self.question11 = question11
+        self.question12 = question12
+        self.question13 = question13
+        self.question13_2 = question13_2
+        self.question14 = question14
+        self.question15 = question15
+        self.question16 = question16
+        self.question17 = question17
+        self.risk = risk
+
 
 db.create_all()
 
 
 @app.route("/")
 def welcome():
-    return render_template('welcome.html')
+    return render_template('index.html')
 
 @app.route("/form")
 def show_form():
@@ -110,11 +153,16 @@ def save():
     #satisfaction = request.form['satisfaction']
     #q1 = request.form['q1']
     #q2 = request.form['q2']
-
     #funkcja obliczajaca risk factor. zwraca risk factor
-    risk_factor_calculate(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10, question11, question12, question13, question13_2,question14, question15, question16, question17)
+    risk = risk_factor_calculate(question1, question2, question3, question4, question5,
+                          question6, question7, question8, question9, question10,
+                          question11, question12, question13, question13_2,question14,
+                          question15, question16, question17)
     # Save the data
-    #fd = Formdata(firstname, email, age, income, satisfaction, q1, q2)
+    fd = Formdata(question1, question2, question3, question4, question5,
+                          question6, question7, question8, question9, question10,
+                          question11, question12, question13, question13_2,question14,
+                          question15, question16, question17, risk)
     db.session.add(fd)
     db.session.commit()
 
