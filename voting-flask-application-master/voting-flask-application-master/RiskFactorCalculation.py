@@ -107,39 +107,39 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
             risk = risk + 0.65
         elif q8 == "everyday":
             risk = risk + 0.65
-        ##q9
+        ##q9 warzywa az taka rozbieznosc warzyw?
         if q9 == "lpmth":
             risk = risk + 0.82
         elif q9 == "somepmth":
             risk = risk + 0.82
         ##q10
         if q10 == "lpmth":
-            risk = risk + 3.52
+            risk = risk + 2.03
         ##q11
         if q11 == "Tak":
-            risk = risk + 689.83
-        ##q12
+            risk = risk + 12.28
+        ##q12 co tutaj?
         if q12 == "Tak":
             risk = risk + 583.82
 
         ##q13 to waga a q13_2 to wzrost
         bmi=q13 / ((q13_2 / 100) ^ 2)
         if bmi<25:
-            risk=risk+0.78
+            risk=risk+0.44
         elif bmi<29:
-            risk=risk+1.91
+            risk=risk+1.07
         else:
-            risk=risk+9.74
+            risk=risk+5.42
 
         ##q14
         if q14 == "poniżej 25 lat":
-            risk = risk + 0.86
+            risk = risk + 0.46
         elif q14 == "25 - 40 lat":
-            risk = risk + 0.86
+            risk = risk + 0.46
         elif q14 == "40 – 50 lat":
-            risk = risk + 1.26
+            risk = risk + 0.72
         elif q14 == "powyżej 50 lat":
-            risk = risk + 6.15
+            risk = risk + 3.35
 
         ##q15
         if q15 == "wies":
