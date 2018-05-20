@@ -3,14 +3,18 @@
 function setAction (element,value) {
   switch (value){
     case "kobieta":
+  document.getElementById('dziex').style.display = 'none';
+          document.getElementById('dalej').style.display = 'block';
+    break;
+    case "mezczyzna":
+        document.getElementById('dalej').style.display = 'none';
+      document.getElementById('dziex').style.display = 'block';
+      document.getElementById('sexForm').action = "../templates/index.html";
+    break;
+    case "formView":
     window.location.href = "../templates/form.html";
     document.getElementById('sexForm').action = "../templates/form.html";
     element.form.submit();
-    breakblo
-    case"mezczyzna":
-      document.getElementById('dziex').style.display = 'block';
-      document.getElementById('sexForm').action = "../templates/index.html";
-
 
   }
 }
