@@ -152,32 +152,36 @@
               </div>
               <?-- 6 pytanie -->
                 <div class="form-group">
-                    <label for="cytologia" class="title">  Ile razy w przeciągu Twojego życia wykonywałaś badanie cytologiczne?
+                    <label for="cytologia" class="title">  Ile lat upłynęło od Twojego ostatniego badania cytologicznego?
             </label>
-                    <label class="radio">nigdy
+                    <label class="radio">nie miałam cytologii
                       <input type="radio"  name="cytologia" value="0" required>
                       <span class="checkround"></span>
                       </label>
-                    <label class="radio">1 lub 2 razy
+                    <label class="radio">1-2 lata
                       <input type="radio"  name="cytologia" value="1-2">
                       <span class="checkround"></span>
                       </label>
-                    <label class="radio">3 lub 4 razy
+                    <label class="radio">3-4 lata
                       <input type="radio"  name="cytologia" value="3-4">
                       <span class="checkround"></span>
                       </label>
-                    <label class="radio">5 lub 6 razy
+                    <label class="radio">5-6 lata
                       <input type="radio"  name="cytologia" value="5-6">
                       <span class="checkround"></span>
                       </label>
-                    <label class="radio">7 lub 8 razy
-                      <input type="radio"  name="cytologia" value="7-8">
+                    <label class="radio">7-9 lata
+                      <input type="radio"  name="cytologia" value="7-9">
                       <span class="checkround"></span>
                       </label>
-                    <label class="radio">9 lub więcej razy
-                      <input type="radio"  name="cytologia" value="9+">
+                    <label class="radio">10 lub więcej lat
+                      <input type="radio"  name="cytologia" value="10+">
                       <span class="checkround"></span>
                       </label>
+                      <label class="radio">nie pamiętam
+                        <input type="radio"  name="cytologia" value="np">
+                        <span class="checkround"></span>
+                        </label>
                 </div>
                 <?-- 7 pytanie -->
                   <div class="form-group">
@@ -208,42 +212,28 @@
                     <div class="form-group">
                         <label for="alkohol" class="title"> Przypomnij sobie okres ostatnich 3 miesięcy. W ciągu tego okresu, jak często spożywałaś alkohol?
 
-                        <label class="radio">raz w miesiącu lub rzadziej
-                          <input type="radio"  name="alkohol" value="1pmth" required>
-                          <span class="checkround"></span>
-                          </label>
-                        <label class="radio">kilka razy w miesiącu
-                          <input type="radio"  name="alkohol" value="somepmth">
-                          <span class="checkround"></span>
-                          </label>
-                        <label class="radio"> kilka razy w tygodniu
+                        <label class="radio">kilka razy w tygodniu lub częściej
                           <input type="radio"  name="alkohol" value="somepwk">
                           <span class="checkround"></span>
                           </label>
-                        <label class="radio">codziennie
-                          <input type="radio"  name="alkohol" value="everyday">
+                        <label class="radio">raz w tygodniu lub rzadziej
+                          <input type="radio"  name="alkohol" value="oncelow">
                           <span class="checkround"></span>
                           </label>
                     </div>
                     <?-- 9 pytanie -->
                       <div class="form-group">
                           <label for="warzywa" class="title"> Przypomnij sobie okres ostatnich 3 miesięcy. W ciągu tego okresu, jak często spożywałaś warzywa?
-                          <label class="radio">raz w miesiącu lub rzadziej
-                            <input type="radio"  name="warzywa" value="1pmth" required>
+                            <label class="radio">codziennie
+                              <input type="radio"  name="warzywa" value="everyday">
+                              <span class="checkround"></span>
+                              </label>
+                          <label class="radio"> rzadziej niż codziennie
+                            <input type="radio"  name="warzywa" value="less" required>
                             <span class="checkround"></span>
                             </label>
-                          <label class="radio">kilka razy w miesiącu
-                            <input type="radio"  name="warzywa" value="somepmth">
-                            <span class="checkround"></span>
-                            </label>
-                          <label class="radio"> kilka razy w tygodniu
-                            <input type="radio"  name="warzywa" value="somepwk">
-                            <span class="checkround"></span>
-                            </label>
-                          <label class="radio">kilka razy dziennie
-                            <input type="radio"  name="warzywa" value="everyday">
-                            <span class="checkround"></span>
-                            </label>
+
+
                       </div>
                       <?-- 10 pytanie -->
                         <div class="form-group">
@@ -279,6 +269,41 @@
                             <option>Nie wiem</option>
                           </select>
                         </div>
+                        <?-- nowe 1 --?>
+
+
+                        <div class="form-group">
+                          <label for="chorzyHPV" class="title">Czy przebyłaś zakażenie wirusem HPV?</label>
+                          <label class="radio">TAK
+                              <input type="radio" id="chorzyHPV" name="chorzyHPV" value="Tak" required onclick="javascript:show(id,value)">
+                              <span class="checkround"></span>
+                              </label>
+                            <label class="radio">NIE
+                              <input type="radio" id="chorzyHPV" name="chorzyHPV" value="Nie" onclick="javascript:show(id,value)">
+                              <span class="checkround"></span>
+                              </label>
+
+                        <?-- nowe 2 --?>
+                        <div class="form-group" id="HPV" style="visibility:hidden;display:none;">
+                            <label for="ciaza" class="title">  Jakiego typu był ten wirus?
+                    </label>
+                            <label class="radio">typ 6, 11 lub 42
+                              <input type="radio" id="HPV"   name="HPV" value="0">
+                              <span class="checkround"></span>
+                              </label>
+                            <label class="radio">typ 31, 33, 35, 39, 45, 51 lub 52
+                              <input type="radio"  id="HPV"  name="HPV" value="1"  >
+                              <span class="checkround"></span>
+                              </label>
+                            <label class="radio">typ 16 lub 18
+                              <input type="radio"  id="HPV"  name="HPV" value="2"  >
+                              <span class="checkround"></span>
+                              </label>
+                            <label class="radio">inny / nie pamiętam
+                              <input type="radio"  id="HPV"  name="HPV" value="3" >
+                              <span class="checkround"></span>
+                              </label>
+                            </div>
                         <?-- 13 pytanie -->
                         <div class="form-group">
                             <label for="Waga" class="title">Twoja waga ciała [kg]:</label>
