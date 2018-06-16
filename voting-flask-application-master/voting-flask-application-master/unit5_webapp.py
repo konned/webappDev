@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import statistics
@@ -103,35 +103,109 @@ def show_result():
     #tego z pie chartem trochę nie rozumiem, to może jak już bd risk na 100% ustalony :D
 
 
+    data1 = []
+    for idx, val in enumerate(fd_risk):
+        data1.append([idx, val])
 
-    # Some simple statistics for sample questions
-    satisfaction = []
-    q1 = []
-    q2 = []
-    for el in fd_list:
-        satisfaction.append(int(el.satisfaction))
-        q1.append(int(el.q1))
-        q2.append(int(el.q2))
+    # Sortowanie tablicy po risk faktorze (czyli po kolumnie o indeksie 1)
+    data1 = sorted(data1, key=lambda x: x[1])
 
-    if len(satisfaction) > 0:
-        mean_satisfaction = statistics.mean(satisfaction)
+    antykoncepcja = []
+    partnerzy = []
+    cytologia = []
+    papierosy = []
+    alkohol = []
+    warzywa = []
+    sport = []
+    rak = []
+    ciaze = []
+    waga = []
+    wiek = []
+
+    for value in fd_list:
+        antykoncepcja.append(int(value.question1))
+        partnerzy.append(int(value.question2))
+        cytologia.append(int(value.question6))
+        papierosy.append(int(value.question7))
+        alkohol.append(int(value.question8))
+        warzywa.append(int(value.question9))
+        sport.append(int(value.question10))
+        rak.append(int(value.question11))
+        ciaze.append(int(value.question4))
+        waga.append(int(value.question13))
+        wiek.append(int(value.question14))
+
+    antykoncepcja_mean = statistics.mean(antykoncepcja) if len(antykoncepcja) > 0 else 0
+    partnerzy_mean = statistics.mean(partnerzy) if len(partnerzy) > 0 else 0
+    cytologia_mean = statistics.mean(cytologia) if len(cytologia) > 0 else 0
+    papierosy_mean = statistics.mean(papierosy) if len(papierosy) > 0 else 0
+    alkohol_mean = statistics.mean(alkohol) if len(alkohol) > 0 else 0
+    warzywa_mean = statistics.mean(warzywa) if len(warzywa) > 0 else 0
+    sport_mean = statistics.mean(sport) if len(sport) > 0 else 0
+    rak_mean = statistics.mean(rak) if len(rak) > 0 else 0
+    ciaze_mean = statistics.mean(ciaze) if len(ciaze) > 0 else 0
+    waga_mean = statistics.mean(waga) if len(waga) > 0 else 0
+    wiek_mean = statistics.mean(wiek) if len(wiek) > 0 else 0
+
+    data2 = [
+        ['antykoncepcja', antykoncepcja_mean],
+        ['partnerzy', partnerzy_mean],
+        ['cytologia', cytologia_mean],
+        ['papierosy', papierosy_mean],
+        ['alkohol', alkohol_mean],
+        ['warzywa', warzywa_mean],
+        ['sport', sport_mean],
+        ['rak w rodzinie', rak_mean],
+        ['ilość ciąż', ciaze_mean],
+        ['waga', waga_mean],
+        ['wiek', wiek_mean]
+    ]
+
+    low = []  # niskie ryzyko
+    medium = []  # srednie ryzyko
+    high = []  # wysokie ryzyko
+
+    #wartosci risk  factorow
+    medium_risk = 20
+    high_risk = 50 #zmienic jak beda znane risk_faktory
+
+    for idx, val in enumerate(fd_risk):
+        if val >= high_risk:
+            high.append(int(val.question6))
+        elif val >= medium_risk:
+            medium.append(int(val.question6))
+        else:
+            low.append(int(val.question6))
+
+    if len(high) > 0:
+        mean_high = statistics.mean(high)
     else:
-        mean_satisfaction = 0
+        mean_high = 0
 
-    if len(q1) > 0:
-        mean_q1 = statistics.mean(q1)
+    if len(medium) > 0:
+        mean_medium = statistics.mean(medium)
     else:
-        mean_q1 = 0
+        mean_medium = 0
 
-    if len(q2) > 0:
-        mean_q2 = statistics.mean(q2)
+    if len(low) > 0:
+        mean_low = statistics.mean(low)
     else:
-        mean_q2 = 0
+        mean_low = 0
 
-    # Prepare data for google charts
-    data = [['Satisfaction', mean_satisfaction], ['Python skill', mean_q1], ['Flask skill', mean_q2]]
+    data3 = [
+        ['Niskie', mean_low],
+        ['Średnie', mean_medium],
+        ['Wysokie', mean_high]
+    ]
 
-    return render_template('result.html', data=data)
+    data = [data1, data2, data3]
+
+    current = request.args.get('form_id')
+
+    if current is None:
+        current = -1
+
+    return render_template('result.html', data=data, current=current)
 
 
 @app.route("/save", methods=['POST'])
@@ -199,7 +273,9 @@ def save():
     db.session.add(fd)
     db.session.commit()
 
-    return redirect('/result')
+
+    return redirect(url_for('show_result', form_id=fd.id))
+
 
 
 if __name__ == "__main__":
