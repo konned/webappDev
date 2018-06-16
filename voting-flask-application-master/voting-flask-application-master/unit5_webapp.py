@@ -199,7 +199,7 @@ def save():
     db.session.add(fd)
     db.session.commit()
 
-    return redirect('/') #TODO zmienic na wyswietlanie wykresow
+    return redirect('/result')
 
 
 if __name__ == "__main__":
