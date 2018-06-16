@@ -1,4 +1,5 @@
-def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q13_2, q14, q15, q16, q17):
+def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13,
+                          q13_2, q14, q15, q16, q17, chHPV, tHPV):
     """
 
     :param q1:
@@ -23,14 +24,14 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
     risk=0
     ##q1
     if q1=="0":
-        risk=0
+        risk=risk+1
     elif q1=="5+":
-        #przedzial od 1,5-4,3
-        risk=risk+3
+
+        risk=risk+1.3
     elif q1=="5-":
-        risk=risk+1.2
+        risk=risk+2.6
     elif q1=="10+":
-        risk=risk+2
+        risk=risk+1.95
         ##q2
     if q2=="10+":
         risk=risk+3.12
@@ -77,7 +78,7 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
         risk=risk+1.44
     elif q5=="22+":
         risk=risk+1
-        ##q6
+        ##q6 cytologia
         if q6 == "0":
             risk = risk + 5.05
         elif q6 == "1-2":
@@ -90,9 +91,13 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
             risk = risk + 3.2
         elif q6 == "9+":
             risk = risk + 6.2
+        elif q6 =="np":
+            risk = risk+1.87
         ##q7
         if q7 == "0":
             risk = risk + 1
+        elif q7 == "1-10":
+            risk = risk + 1.16
         elif q7 == "11-20":
             risk = risk + 1.4
         elif q7 == "20-30":
@@ -101,35 +106,40 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
             risk = risk + 1.93
 
         ##q8
-        if q8 == "somepmth":
-            risk = risk + 0.65
+        if q8 == "oncelow":
+            risk = risk + 1 #fuck logic
         elif q8 == "somepwk":
-            risk = risk + 0.65
-        elif q8 == "everyday":
-            risk = risk + 0.65
-        ##q9 warzywa az taka rozbieznosc warzyw?
-        if q9 == "lpmth":
-            risk = risk + 0.82
-        elif q9 == "somepmth":
-            risk = risk + 0.82
+            risk = risk+0.49
+        ##q9 warzywa
+        if q9 == "everyday":
+            risk = risk + 1
+        elif q9 == "less":
+            risk = risk + 3.67
         ##q10
-        if q10 == "lpmth":
-            risk = risk + 2.03
+        if q10 == "1pwk":
+            risk = risk + 1
+        elif q10 == "less":
+            risk = risk+1.62
         ##q11
         if q11 == "Tak":
-            risk = risk + 12.28
+            risk = risk + 2.88
+        elif q11=="Nie":
+            risk = risk+1
+
         ##q12 co tutaj?
         if q12 == "Tak":
-            risk = risk + 583.82
+            risk = risk + 2.55
+        elif q12 == "Nie":
+            risk = risk+1
 
         ##q13 to waga a q13_2 to wzrost
-        bmi=q13 / ((q13_2 / 100) ^ 2)
+        bmi= float(q13) / ((float(q13_2) / 100) ^ float(2))
         if bmi<25:
-            risk=risk+0.44
+            risk=risk+0.55
         elif bmi<29:
-            risk=risk+1.07
+            risk=risk+1.05
         else:
-            risk=risk+5.42
+            risk=risk+3.03
 
         ##q14
         if q14 == "poniżej 25 lat":
@@ -149,5 +159,18 @@ def risk_factor_calculate(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13
 
         ##q16 nie ma znaczenia
         ##q17 nie ma znaczenia
+
+        #chora na HPV
+        if chHPV == "Nie":
+            risk = risk+1
+        else:
+            if tHPV == "0": #typ 6, 11 lub 42
+                risk = risk+6.4
+            elif tHPV=="1": #typ 31 33 35 itd
+                risk = risk + 21
+            elif tHPV == "2": #typ 16 18
+                risk += 33
+            elif tHPV =="3":
+                risk = risk+6.4
         #TODO trzeba dodac obliczenia risk faktora
     return risk

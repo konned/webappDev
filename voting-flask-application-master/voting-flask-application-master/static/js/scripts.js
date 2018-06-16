@@ -12,8 +12,8 @@ function setAction (element,value) {
       document.getElementById('sexForm').action = "../templates/index.html";
     break;
     case "formView":
-    window.location.href = "../templates/form.html";
-    document.getElementById('sexForm').action = "../templates/form.html";
+    window.location.href = "/form";
+    document.getElementById('sexForm').action = "/form";
     element.form.submit();
 
   }

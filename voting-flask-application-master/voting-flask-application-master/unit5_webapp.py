@@ -47,12 +47,14 @@ class Formdata(db.Model):
     question15 = db.Column(db.String)
     question16 = db.Column(db.String)
     question17 = db.Column(db.String)
+    chorzyHPV = db.Column(db.String)
+    typHPV = db.Column(db.String)
     risk = db.Column(db.Float)
 
     def __init__(self, question1, question2, question3, question4, question5,
                           question6, question7, question8, question9, question10,
                           question11, question12, question13, question13_2,question14,
-                          question15, question16, question17, risk):
+                          question15, question16, question17, chorzyHPV, typHPV, risk):
         self.question1 = question1
         self.question2 = question2
         self.question3 = question3
@@ -71,13 +73,15 @@ class Formdata(db.Model):
         self.question15 = question15
         self.question16 = question16
         self.question17 = question17
+        self.chorzyHPV = chorzyHPV
+        self.typHPV = typHPV
         self.risk = risk
 
 
 db.create_all()
 
 
-@app.route("/")
+@app.route("/", )
 def welcome():
     return render_template('index.html')
 
@@ -231,6 +235,13 @@ def save():
     question10 = request.form['wf']
     question11 = request.form['chorzySM']
     question12 = request.form['chorzyIN']
+    chorzyHPV = request.form['chorzyHPV']
+
+    if chorzyHPV == "Tak":
+        typHPV = request.form["HPV"]
+    else:
+        typHPV = "-1"
+
     question13 = request.form['waga']
     question13_2 = request.form['wzrost']
     question14 = request.form['wiek']
@@ -253,16 +264,18 @@ def save():
     risk = risk_factor_calculate(question1, question2, question3, question4, question5,
                           question6, question7, question8, question9, question10,
                           question11, question12, question13, question13_2,question14,
-                          question15, question16, question17)
+                          question15, question16, question17, chorzyHPV, typHPV)
     # Save the data
     fd = Formdata(question1, question2, question3, question4, question5,
                           question6, question7, question8, question9, question10,
                           question11, question12, question13, question13_2,question14,
-                          question15, question16, question17, risk)
+                          question15, question16, question17, chorzyHPV, typHPV, risk)
     db.session.add(fd)
     db.session.commit()
 
+
     return redirect(url_for('show_result', form_id=fd.id))
+
 
 
 if __name__ == "__main__":
